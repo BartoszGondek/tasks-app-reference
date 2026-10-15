@@ -7,13 +7,16 @@ on:
 
 jobs:
   run_tests:
+    strategy:
+      matrix:
+        service: [tasks-api, title-normalizer]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
         with:
           python-version: "3.12"
-      - run: pip install -r services/tasks-api/requirements.txt
-      - run: pytest services/tasks-api/
+      - run: pip install -r services/${{matrix.service}}/requirements.txt
+      - run: pytest services/${{matrix.service}}
 
       
