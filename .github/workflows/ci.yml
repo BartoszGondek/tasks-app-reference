@@ -17,6 +17,16 @@ jobs:
         with:
           python-version: "3.12"
       - run: pip install -r services/${{matrix.service}}/requirements.txt
-      - run: pytest services/${{matrix.service}}
-
-      
+      - run: pytest -rA services/${{matrix.service}} > ${{matrix.service}}-test-report.txt
+      - uses: actions/upload-artifact@v7
+        with:
+          name: ${{matrix.service}} test report
+          path: ${{matrix.service}}-test-report.txt 
+      - run: pip install bandit
+      - run: bandit -r services/${{matrix.service}} -f html -o ${{matrix.service}}-bandit-report.html
+        continue-on-error: true
+      - name: Upload Bandit Report as Artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: bandit-security-report
+          path: ${{matrix.service}}-bandit-report.html
