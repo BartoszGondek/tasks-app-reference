@@ -7,26 +7,29 @@ on:
 
 jobs:
   run_tests:
-    strategy:
-      matrix:
-        service: [tasks-api, title-normalizer]
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        service: [tasks-api, title-normalizer] # ${{matrix.serivce}}
+        python-version: [3.12, 3.11, 3.8] # ${{matrix.python-version}}
     steps:
       - uses: actions/checkout@v7
       - uses: actions/setup-python@v7
         with:
-          python-version: "3.12"
+          python-version: ${{matrix.python-version}}
       - run: pip install -r services/${{matrix.service}}/requirements.txt
-      - run: pytest -rA services/${{matrix.service}} > ${{matrix.service}}-test-report.txt
+      - run: pytest -rA services/${{matrix.service}} > ${{matrix.service}}-${{matrix.python-version}}-test-report.txt
       - uses: actions/upload-artifact@v7
+        if: always()
         with:
-          name: ${{matrix.service}} test report
-          path: ${{matrix.service}}-test-report.txt 
+          name: ${{matrix.service}}-${{matrix.python-version}} test report
+          path: ${{matrix.service}}-${{matrix.python-version}}-test-report.txt 
       - run: pip install bandit
-      - run: bandit -r services/${{matrix.service}} -f html -o ${{matrix.service}}-bandit-report.html
+      - run: bandit -r services/${{matrix.service}} -f html -o ${{matrix.service}}-${{matrix.python-version}}-bandit-report.html
         continue-on-error: true
       - name: Upload Bandit Report as Artifact
         uses: actions/upload-artifact@v4
         with:
           name: bandit-security-report
-          path: ${{matrix.service}}-bandit-report.html
+          path: ${{matrix.service}}-${{matrix.python-version}}-bandit-report.html
