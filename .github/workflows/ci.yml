@@ -47,7 +47,7 @@ jobs:
       - uses: actions/download-artifact@v7
         with:
           name: tasks-api-3.12-bandit-report
-          path: _site
+          path: _site/index.html
       -  uses: actions/upload-pages-artifact@v5
          with:
           path: _site
