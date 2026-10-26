@@ -75,7 +75,14 @@ Tasks: read the matrix and `upload-artifact` parts of the [workflow syntax](http
 
 ### Meeting 3: CD with GitHub Pages
 
-A `deploy` job that waits for `run_tests` (`needs`), downloads the two Bandit reports, builds an `index.html` and publishes everything with GitHub Pages. Then a gate: the deploy runs only from `main`, and changes arrive through a pull request. Pages needs a public repo on a free account, and what you publish is public.
+A `deploy` job that waits for `run_tests` (`needs`), downloads the two Bandit reports, builds an `index.html` and publishes everything with GitHub Pages. A `generate_api_docs` job makes API docs for both services with pdoc, and the index page links to them. The deploy runs only when a pull request is merged: the `pull_request` trigger has the activity types `opened`, `synchronize` and `closed`, and `deploy` checks the `merged` field. Pages needs a public repo on a free account, and what you publish is public.
+
+Two settings are not in the file. Set them in your own repo:
+
+- Settings > Pages > Source: GitHub Actions (the repo must be public).
+- Settings > Environments > github-pages > Deployment branches and tags: add the rule `refs/pull/*/merge`. Without it the `deploy` job of a merged pull request is refused with: Branch "refs/pull/N/merge" is not allowed to deploy to github-pages due to environment protection rules.
+
+If you missed this meeting: replace `.github/workflows/ci.yml` with the one in this repo, delete `.github/workflows/ci_livecode.yml` if you have it, and set the two settings above. None of this is homework.
 
 Docs: [Using custom workflows with GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/using-custom-workflows-with-github-pages), [events that trigger workflows](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows).
 
