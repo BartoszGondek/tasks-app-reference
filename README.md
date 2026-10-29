@@ -92,10 +92,24 @@ Tasks:
 2. Deploy only when a pull request is merged (look at the `pull_request` activity types and the `merged` field).
 3. Read your whole `ci.yml` and explain each job to yourself.
 
+### Meeting 4: Docker images and containers
+
+A Dockerfile describes an image: a base image plus the steps that add your service to it. You build the image, run it as a container, and reach it on a port.
+
+If you missed this meeting: copy these four files from this repo into your own, each as a whole file: `services/tasks-api/Dockerfile`, `services/tasks-api/.dockerignore`, `services/title-normalizer/Dockerfile`, `services/title-normalizer/.dockerignore`. There is no setting to change and `ci.yml` does not change. None of this is homework.
+
+Docs: [Dockerfile reference](https://docs.docker.com/reference/dockerfile/), [Building best practices](https://docs.docker.com/build/building/best-practices/), [Forwarding ports in your codespace](https://docs.github.com/en/codespaces/developing-in-a-codespace/forwarding-ports-in-your-codespace).
+
+Tasks:
+
+1. A Dockerfile for `tasks-api`: build the image, run it, then `curl` `/health` and `POST /tasks`. Do not change `services/`.
+2. The same for `title-normalizer`.
+3. A `.dockerignore` for each service.
+4. Run a container as a user that is not root.
+
 ### Coming later (planned)
 
-- Docker: a Dockerfile for each service, images, layers, running containers. Docs: [Docker build best practices](https://docs.docker.com/build/building/best-practices/).
-- Docker Compose: running both services together, publishing an image to a registry. Docs: [Docker Compose](https://docs.docker.com/compose/).
+- Docker Compose and containers that talk to each other: running both services together from one file, a `build_images` CI job that builds both images, publishing an image to a registry. Docs: [Docker Compose](https://docs.docker.com/compose/).
 - Quality and security: image scanning, Dependabot, lint gates. Docs: [Securing your software supply chain](https://docs.github.com/en/code-security/how-tos/secure-your-supply-chain).
 - Infrastructure as code with Terraform and the Docker provider (no cloud account). Docs: [kreuzwerker/docker provider](https://registry.terraform.io/providers/kreuzwerker/docker/latest/docs).
 - Monitoring: metrics from the app, Prometheus, Grafana. Docs: [Prometheus overview](https://prometheus.io/docs/introduction/overview/).
