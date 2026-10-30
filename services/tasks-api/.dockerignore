@@ -1,4 +1,10 @@
-**/__pycache__
-**/*.pyc
+__pycache__
+*.py[cod]
 .pytest_cache
-tests
+.venv
+venv
+.git
+.gitignore
+Dockerfile
+.dockerignore
+.pytest_cache
