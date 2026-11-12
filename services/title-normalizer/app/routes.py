@@ -21,3 +21,5 @@ def invoke():
     if not isinstance(title, str):
         return jsonify(error="title must be a string"), 400
     return jsonify(title=normalize(title))
+
+

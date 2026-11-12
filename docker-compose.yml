@@ -1,0 +1,15 @@
+
+services:
+  title-normalizer:
+    build:
+      context: ./services/title-normalizer
+    ports:
+      - "5001:5001"
+
+  tasks-api:
+    build:
+      context: ./services/tasks-api
+    ports:
+      - "5002:5000"
+    depends_on:
+      - title-normalizer
